@@ -25,6 +25,10 @@ if !exists("g:Gitv_CommitStep")
     let g:Gitv_CommitStep = &lines
 endif
 
+if !exists('g:Gitv_OpenHorizontal')
+    let g:Gitv_OpenHorizontal = 'AUTO'
+endif
+
 if !exists('g:Gitv_WipeAllOnClose')
     let g:Gitv_WipeAllOnClose = 0 "default for safety
 endif
@@ -117,7 +121,6 @@ fu! Gitv_OpenGitCommand(command, windowCmd, ...) "{{{
         else
             silent setlocal nowrap
         endif
-        silent setlocal fdm=syntax
         nnoremap <buffer> <silent> q :q!<CR>
         nnoremap <buffer> <silent> u :if exists('b:Git_Command')<bar>call Gitv_OpenGitCommand(b:Git_Command, '', 1)<bar>endif<cr>
         call append(0, split(result, '\n')) "system converts eols to \n regardless of os.
@@ -833,7 +836,6 @@ fu! s:OpenGitvCommit(geditForm, forceOpenFugitive) "{{{
         let cmd = a:geditForm . " " . sha
         let cmd = 'call s:RecordBufferExecAndWipe("'.cmd.'", '.(a:geditForm=='Gedit').')'
         call s:MoveIntoPreviewAndExecute(cmd, 1)
-        call s:MoveIntoPreviewAndExecute('setlocal fdm=syntax', 0)
     endif
 endf
 fu! s:OpenWorkingCopy(geditForm)
